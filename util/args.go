@@ -48,6 +48,9 @@ var Args map[string]string = map[string]string{}
 
 func init() {
 
+	// Default operation is search
+	Args["command"] = "search"
+
 	// Parse command line arguments
 	for i := 1; i < len(os.Args); i++ {
 		parts := strings.Split(os.Args[i], "=")
