@@ -13,6 +13,7 @@ import (
 	"github.com/PietroCarrara/anigo/anidata"
 	"github.com/PietroCarrara/anigo/aniutil"
 	"github.com/PietroCarrara/anigo/util"
+	"github.com/fatih/color"
 	"io/ioutil"
 	"log"
 	"os"
@@ -173,8 +174,31 @@ func print(a anidata.Anime) {
 		completition = a.Completed * 100 / a.Chapters
 	}
 
-	fmt.Printf("Title: %s\n", a.Title)
-	fmt.Printf("Chapters: %d\tWatched: %d (%d%%)\n", a.Chapters, a.Completed, completition)
+	red := color.New(color.FgRed).SprintFunc()
+	yellow := color.New(color.FgYellow).SprintFunc()
+	green := color.New(color.FgGreen).SprintFunc()
+	blue := color.New(color.FgBlue).SprintFunc()
+	cyan := color.New(color.FgCyan).SprintFunc()
+	magenta := color.New(color.FgMagenta).SprintFunc()
+	white := color.New(color.FgWhite).SprintFunc()
+	// black := color.New(color.FgBlack).SprintFunc()
+
+	fmt.Printf("Title: %s\n", yellow(a.Title))
+	fmt.Printf("Chapters: %s\tWatched: %s (%s%%)\n", cyan(a.Chapters), cyan(a.Completed), magenta(completition))
+
+	var statColor func(...interface{}) string
+	switch a.Status {
+	case anidata.PlanToWatch:
+		statColor = white
+	case anidata.Watching:
+		statColor = green
+	case anidata.Completed:
+		statColor = blue
+	case anidata.Dropped:
+		statColor = red
+	}
+
+	fmt.Printf("Status: %s\n", statColor(a.Status))
 
 	fmt.Println()
 }
