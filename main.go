@@ -75,6 +75,8 @@ func main() {
 		pull()
 	case "edit":
 		edit()
+	case "spit":
+		util.SpitAutoComplete(Home)
 	}
 
 	sort.Slice(Database, func(i, j int) bool { return Database[i].Title < Database[j].Title })
