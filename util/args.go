@@ -20,6 +20,11 @@ var arguments []argument = []argument{
 	{Name: "chapters", Usage: []string{"-c", "--chapters", "chapters"}, Description: "Set total number of chapters", UsesNext: []bool{true, false, false}},
 	{Name: "completed", Usage: []string{"-w", "--watched", "watched"}, Description: "Set number of watched chapters", UsesNext: []bool{true, false, false}},
 
+	{Name: "set-title", Usage: []string{"--set-title"}, Description: "Set title for edit mode", UsesNext: []bool{true, false, false}},
+	{Name: "set-chapters", Usage: []string{"--set-chapters"}, Description: "Set total number of chapters for edit mode", UsesNext: []bool{false}},
+	{Name: "set-completed", Usage: []string{"--set-completed"}, Description: "Set number of watched chapters for edit mode", UsesNext: []bool{false}},
+	{Name: "set-status", Usage: []string{"--set-status"}, Description: "Set status for edit mode", UsesNext: []bool{false}},
+
 	{Name: "user", Usage: []string{"-u", "--user", "user"}, Description: "Define the user for MyAnimeList.net", UsesNext: []bool{true, false, false}},
 
 	// Statuses
@@ -32,6 +37,7 @@ var arguments []argument = []argument{
 	{Name: "command", Usage: []string{"-Q", "search", "query"}, Description: "Do a search", Default: "search"},
 	{Name: "command", Usage: []string{"-A", "add"}, Description: "Add an entry to the database", Default: "add"},
 	{Name: "command", Usage: []string{"pull"}, Description: "Pull your entries from MyAnimeList.net", Default: "pull"},
+	{Name: "command", Usage: []string{"-E", "edit"}, Description: "Edit all entries mathcing the criteria. To set values use --set-<value>", Default: "edit"},
 }
 
 var Args map[string]string = map[string]string{}

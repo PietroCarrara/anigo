@@ -73,6 +73,8 @@ func main() {
 		search()
 	case "pull":
 		pull()
+	case "edit":
+		edit()
 	}
 
 	sort.Slice(Database, func(i, j int) bool { return Database[i].Title < Database[j].Title })
@@ -143,6 +145,50 @@ func pull() {
 	// TODO: check for repeated entries and update propperly,
 	// rather than just overwrite
 	Database = aniutil.FromMAL(util.Args["user"])
+}
+
+func edit() {
+
+	var err error
+
+	var chapters int64 = -1
+	if util.Args["set-chapters"] != "" {
+		chapters, err = strconv.ParseInt(util.Args["set-chapters"], 10, 32)
+		if err != nil {
+			log.Fatalf("Invalid number informed for editing chapters: %s\n", err.Error())
+		}
+	}
+
+	var completed int64 = -1
+	if util.Args["set-completed"] != "" {
+		completed, err = strconv.ParseInt(util.Args["set-completed"], 10, 32)
+		if err != nil {
+			log.Fatalf("Invalid number informed for editing completed: %s\n", err.Error())
+		}
+	}
+
+	status, err := anidata.StatusFromString(util.Args["set-status"])
+	if err != nil {
+		log.Println("Either no status was informed or a invalid one was. Assuming 'Unknow Status' for editing...")
+	}
+
+	for i := 0; i < len(Database); i++ {
+		if matchCriteria(Database[i]) {
+			if util.Args["set-title"] != "" {
+				Database[i].Title = util.Args["set-title"]
+			}
+			if chapters >= 0 {
+				Database[i].Chapters = int(chapters)
+			}
+			if completed >= 0 {
+				Database[i].Completed = int(completed)
+			}
+			if status >= 0 {
+				Database[i].Status = status
+			}
+			Database[i].Fix()
+		}
+	}
 }
 
 func matchCriteria(a anidata.Anime) bool {
