@@ -15,9 +15,12 @@ type argument struct {
 
 var arguments []argument = []argument{
 	{Name: "debug", Usage: []string{"--debug"}, Description: "Activate debug mode", Default: "true"},
+
 	{Name: "title", Usage: []string{"-t", "--title", "title"}, Description: "Set title", UsesNext: []bool{true, false, false}},
 	{Name: "chapters", Usage: []string{"-c", "--chapters", "chapters"}, Description: "Set total number of chapters", UsesNext: []bool{true, false, false}},
-	{Name: "title", Usage: []string{"-w", "--watched", "watched"}, Description: "Set number of watched chapters", UsesNext: []bool{true, false, false}},
+	{Name: "completed", Usage: []string{"-w", "--watched", "watched"}, Description: "Set number of watched chapters", UsesNext: []bool{true, false, false}},
+
+	{Name: "user", Usage: []string{"-u", "--user", "user"}, Description: "Define the user for MyAnimeList.net", UsesNext: []bool{true, false, false}},
 
 	// Statuses
 	{Name: "status", Usage: []string{"-P"}, Description: "Set status as 'Plan To Watch'", Default: "p"},
@@ -28,6 +31,7 @@ var arguments []argument = []argument{
 	// Command
 	{Name: "command", Usage: []string{"-Q", "search", "query"}, Description: "Do a search", Default: "search"},
 	{Name: "command", Usage: []string{"-A", "add"}, Description: "Add an entry to the database", Default: "add"},
+	{Name: "command", Usage: []string{"pull"}, Description: "Pull your entries from MyAnimeList.net", Default: "pull"},
 }
 
 var Args map[string]string = map[string]string{}

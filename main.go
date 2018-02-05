@@ -11,10 +11,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/PietroCarrara/anigo/anidata"
+	"github.com/PietroCarrara/anigo/aniutil"
 	"github.com/PietroCarrara/anigo/util"
 	"io/ioutil"
 	"log"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -68,7 +70,11 @@ func main() {
 		add()
 	case "search":
 		search()
+	case "pull":
+		pull()
 	}
+
+	sort.Slice(Database, func(i, j int) bool { return Database[i].Title < Database[j].Title })
 
 	databaseFile, _ = os.Create(dataBaseFileName)
 	enc := json.NewEncoder(databaseFile)
@@ -124,6 +130,18 @@ func search() {
 		}
 	}
 
+}
+
+func pull() {
+
+	if util.Args["user"] == "" {
+		fmt.Println("user was not informed. Exiting...")
+		return
+	}
+
+	// TODO: check for repeated entries and update propperly,
+	// rather than just overwrite
+	Database = aniutil.FromMAL(util.Args["user"])
 }
 
 func matchCriteria(a anidata.Anime) bool {
