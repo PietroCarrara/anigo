@@ -5,31 +5,29 @@ import (
 	"github.com/cbroglie/mustache"
 	"log"
 	"os"
-	"strings"
 )
 
 type argument struct {
 	Name        string
 	Usage       []string
 	Description string
-	UsesNext    []bool
 	Default     string
 }
 
 var arguments []argument = []argument{
 	{Name: "debug", Usage: []string{"--debug"}, Description: "Activate debug mode", Default: "true"},
 
-	{Name: "title", Usage: []string{"-t", "--title", "title"}, Description: "Set title", UsesNext: []bool{true, false, false}},
-	{Name: "chapters", Usage: []string{"-c", "--chapters", "chapters"}, Description: "Set total number of chapters", UsesNext: []bool{true, false, false}},
-	{Name: "completed", Usage: []string{"-w", "--watched", "watched"}, Description: "Set number of watched chapters", UsesNext: []bool{true, false, false}},
+	{Name: "title", Usage: []string{"-t", "--title"}, Description: "Set title"},
+	{Name: "chapters", Usage: []string{"-c", "--chapters"}, Description: "Set total number of chapters"},
+	{Name: "completed", Usage: []string{"-w", "--watched"}, Description: "Set number of watched chapters"},
 
-	{Name: "set-title", Usage: []string{"--set-title"}, Description: "Set title for edit mode", UsesNext: []bool{false}},
-	{Name: "set-chapters", Usage: []string{"--set-chapters"}, Description: "Set total number of chapters for edit mode", UsesNext: []bool{false}},
-	{Name: "set-completed", Usage: []string{"--set-completed"}, Description: "Set number of watched chapters for edit mode", UsesNext: []bool{false}},
-	{Name: "set-status", Usage: []string{"--set-status"}, Description: "Set status for edit mode", UsesNext: []bool{false}},
+	{Name: "set-title", Usage: []string{"--set-title"}, Description: "Set title for edit mode"},
+	{Name: "set-chapters", Usage: []string{"--set-chapters"}, Description: "Set total number of chapters for edit mode"},
+	{Name: "set-completed", Usage: []string{"--set-completed"}, Description: "Set number of watched chapters for edit mode"},
+	{Name: "set-status", Usage: []string{"--set-status"}, Description: "Set status for edit mode"},
 
-	{Name: "user", Usage: []string{"-u", "--user", "user"}, Description: "Define the user for MyAnimeList.net", UsesNext: []bool{true, false, false}},
-	{Name: "password", Usage: []string{"-p", "--password", "password"}, Description: "Define the password for MyAnimeList.net", UsesNext: []bool{true, false, false}},
+	{Name: "user", Usage: []string{"-u", "--user"}, Description: "Define the user for MyAnimeList.net"},
+	{Name: "password", Usage: []string{"-p", "--password"}, Description: "Define the password for MyAnimeList.net"},
 
 	// Statuses
 	{Name: "status", Usage: []string{"-P"}, Description: "Set status as Plan To Watch", Default: "p"},
@@ -55,14 +53,12 @@ func init() {
 
 	// Parse command line arguments
 	for i := 1; i < len(os.Args); i++ {
-		parts := strings.Split(os.Args[i], "=")
 		for _, val := range arguments {
-			index := in(parts[0], val)
-			if index >= 0 {
-				arg := strings.Join(parts[1:], "")
+			if in(os.Args[i], val) {
+				arg := os.Args[i]
 				if val.Default != "" {
 					arg = val.Default
-				} else if val.UsesNext[index] {
+				} else {
 					i++
 					arg = os.Args[i]
 				}
@@ -73,15 +69,15 @@ func init() {
 	}
 }
 
-func in(value string, arg argument) int {
+func in(value string, arg argument) bool {
 
-	for index, val := range arg.Usage {
+	for _, val := range arg.Usage {
 		if val == value {
-			return index
+			return true
 		}
 	}
 
-	return -1
+	return false
 }
 
 func SpitAutoComplete(home string) {
@@ -99,13 +95,8 @@ func SpitAutoComplete(home string) {
 	}
 
 	for _, val := range arguments {
-		for i, usage := range val.Usage {
-			cmd := usage
-			if len(val.UsesNext) > i && !val.UsesNext[i] {
-				cmd += "="
-			}
-			log.Printf("Usage: %s: ", cmd)
-			vars["all"] += fmt.Sprintf("'%s:%s'\n\t", cmd, val.Description)
+		for _, usage := range val.Usage {
+			vars["all"] += fmt.Sprintf("'%s:%s'\n\t", usage, val.Description)
 		}
 	}
 
