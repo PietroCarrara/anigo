@@ -42,7 +42,6 @@ func main() {
 	// Loading previous entries
 	dataBaseFileName := Home + "/database.json"
 	databaseFile, err := os.Open(dataBaseFileName)
-
 	if err != nil {
 		log.Printf("%s could not be open, initializing new database...\n", dataBaseFileName)
 		// Empty database
@@ -64,8 +63,6 @@ func main() {
 	// Closing since we are done reading
 	databaseFile.Close()
 
-	log.Println(util.Args)
-
 	switch util.Args["command"] {
 	case "add":
 		add()
@@ -73,6 +70,8 @@ func main() {
 		search()
 	case "pull":
 		pull()
+	case "push":
+		push()
 	case "edit":
 		edit()
 	case "spit":
@@ -147,6 +146,28 @@ func pull() {
 	// TODO: check for repeated entries and update propperly,
 	// rather than just overwrite
 	Database = aniutil.FromMAL(util.Args["user"])
+}
+
+func push() {
+
+	if util.Args["user"] == "" || util.Args["password"] == "" {
+		fmt.Println("Credentials missing. Exiting...")
+		return
+	}
+
+	origin := aniutil.FromMAL(util.Args["user"])
+
+	for i, _ := range Database {
+		anime := byTitle(Database[i], origin)
+		if anime != nil {
+			if anime.Merge(Database[i]) {
+				anime.Fix()
+				aniutil.Update(*anime, util.Args["user"], util.Args["password"])
+			}
+		} else {
+			// Insert()
+		}
+	}
 }
 
 func edit() {
@@ -249,4 +270,15 @@ func print(a anidata.Anime) {
 	fmt.Printf("Status: %s\n", statColor(a.Status))
 
 	fmt.Println()
+}
+
+func byTitle(a anidata.Anime, arr []anidata.Anime) *anidata.Anime {
+
+	for _, b := range arr {
+		if strings.ToLower(a.Title) == strings.ToLower(b.Title) {
+			return &b
+		}
+	}
+
+	return nil
 }

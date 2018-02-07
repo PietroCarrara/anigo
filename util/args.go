@@ -29,6 +29,7 @@ var arguments []argument = []argument{
 	{Name: "set-status", Usage: []string{"--set-status"}, Description: "Set status for edit mode", UsesNext: []bool{false}},
 
 	{Name: "user", Usage: []string{"-u", "--user", "user"}, Description: "Define the user for MyAnimeList.net", UsesNext: []bool{true, false, false}},
+	{Name: "password", Usage: []string{"-p", "--password", "password"}, Description: "Define the password for MyAnimeList.net", UsesNext: []bool{true, false, false}},
 
 	// Statuses
 	{Name: "status", Usage: []string{"-P"}, Description: "Set status as Plan To Watch", Default: "p"},
@@ -40,6 +41,7 @@ var arguments []argument = []argument{
 	{Name: "command", Usage: []string{"-Q", "search", "query"}, Description: "Do a search", Default: "search"},
 	{Name: "command", Usage: []string{"-A", "add"}, Description: "Add an entry to the database", Default: "add"},
 	{Name: "command", Usage: []string{"pull"}, Description: "Pull your entries from MyAnimeList.net", Default: "pull"},
+	{Name: "command", Usage: []string{"push"}, Description: "Push your entries to MyAnimeList.net", Default: "push"},
 	{Name: "command", Usage: []string{"-E", "edit"}, Description: "Edit all entries mathcing the criteria. To set values use --set-value", Default: "edit"},
 	{Name: "command", Usage: []string{"--spit"}, Description: "Spit autocomplete", Default: "spit"},
 }
