@@ -37,5 +37,10 @@ func (a *Anime) Merge(b Anime) bool {
 		modified = true
 	}
 
+	if a.Status < b.Status {
+		a.Status = b.Status
+		modified = true
+	}
+
 	return modified
 }

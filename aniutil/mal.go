@@ -58,12 +58,11 @@ func Update(a anidata.Anime, usr, pwd string) {
 	id := malID(a, usr, pwd)
 
 	u := "https://" + url.QueryEscape(usr) + ":" + url.QueryEscape(pwd) + "@myanimelist.net/api/animelist/update/" + id + ".xml"
-	fmt.Println(u)
 
 	// TODO: Post score together
 	data := `<?xml version="1.0" encoding="utf-8"?> <entry>
-        <episode>4</episode> 
-        <status>1</status>
+        <episode>` + fmt.Sprint(a.Completed) + `</episode> 
+        <status>` + statusToMal(a.Status) + `</status>
         <score></score>
         <storage_type></storage_type>
         <storage_value></storage_value>
@@ -135,7 +134,6 @@ func statusToMal(s anidata.Status) string {
 func getID(a anidata.Anime, doc *xmlquery.Node) string {
 
 	for _, node := range doc.SelectElement("anime").SelectElements("entry") {
-		fmt.Printf("|%s| == |%s|\n", a.Title, xmlquery.FindOne(node, "//title").InnerText())
 		if a.Title == xmlquery.FindOne(node, "//title").InnerText() {
 			return xmlquery.FindOne(node, "//id").InnerText()
 		}
