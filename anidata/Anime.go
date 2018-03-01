@@ -16,8 +16,14 @@ func (a *Anime) Fix() {
 
 	a.Title = strings.TrimSpace(a.Title)
 
+	if a.Completed > a.Chapters && a.Chapters > 0 {
+		a.Completed = a.Chapters
+	}
+
 	if a.Status == Completed {
 		a.Completed = a.Chapters
+	} else if a.Chapters == a.Completed {
+		a.Status = Completed
 	}
 }
 
