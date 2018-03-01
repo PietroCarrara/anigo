@@ -56,7 +56,7 @@ func main() {
 				log.Println("Database empty, initializing new...")
 				Database = []anidata.Anime{}
 			} else {
-				log.Fatalf("Error decoding database: %s", err.Error())
+				util.Explode("Error decoding database: " + err.Error())
 			}
 		}
 	}
@@ -81,13 +81,14 @@ func main() {
 	sort.Slice(Database, func(i, j int) bool { return Database[i].Title < Database[j].Title })
 
 	databaseFile, _ = os.Create(dataBaseFileName)
+	defer databaseFile.Close()
+
 	enc := json.NewEncoder(databaseFile)
 	enc.SetIndent(" ", " ")
 	err = enc.Encode(Database)
 	if err != nil {
-		log.Fatal(err)
+		util.Explode(err.Error())
 	}
-	databaseFile.Close()
 }
 
 func add() {
@@ -98,7 +99,7 @@ func add() {
 	if util.Args["chapters"] != "" {
 		chapters, err = strconv.ParseInt(util.Args["chapters"], 10, 32)
 		if err != nil {
-			log.Fatalf("Invalid number informed for chapters: %s\n", err.Error())
+			util.Explode("Invalid number informed for chapters: " + err.Error())
 		}
 	}
 
@@ -106,7 +107,7 @@ func add() {
 	if util.Args["completed"] != "" {
 		completed, err = strconv.ParseInt(util.Args["completed"], 10, 32)
 		if err != nil {
-			log.Fatalf("Invalid number informed for completed: %s\n", err.Error())
+			util.Explode("Invalid number informed for completed: " + err.Error())
 		}
 	}
 
@@ -139,7 +140,7 @@ func search() {
 func pull() {
 
 	if util.Args["user"] == "" {
-		fmt.Println("user was not informed. Exiting...")
+		util.Explode("User not informed!")
 		return
 	}
 
@@ -151,7 +152,7 @@ func pull() {
 func push() {
 
 	if util.Args["user"] == "" || util.Args["password"] == "" {
-		fmt.Println("Credentials missing. Exiting...")
+		util.Explode("Credentials missing!")
 		return
 	}
 
@@ -178,7 +179,7 @@ func edit() {
 	if util.Args["set-chapters"] != "" {
 		chapters, err = strconv.ParseInt(util.Args["set-chapters"], 10, 32)
 		if err != nil {
-			log.Fatalf("Invalid number informed for editing chapters: %s\n", err.Error())
+			util.Explode("Invalid number informed for editing chapters: " + err.Error())
 		}
 	}
 
@@ -186,7 +187,7 @@ func edit() {
 	if util.Args["set-completed"] != "" {
 		completed, err = strconv.ParseInt(util.Args["set-completed"], 10, 32)
 		if err != nil {
-			log.Fatalf("Invalid number informed for editing completed: %s\n", err.Error())
+			util.Explode("Invalid number informed for editing completed: " + err.Error())
 		}
 	}
 

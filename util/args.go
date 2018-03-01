@@ -3,7 +3,6 @@ package util
 import (
 	"fmt"
 	"github.com/cbroglie/mustache"
-	"log"
 	"os"
 )
 
@@ -102,7 +101,7 @@ func SpitAutoComplete(home string) {
 
 	res, err := mustache.RenderFile(template, vars)
 	if err != nil {
-		log.Fatalf("Error while processing auto-complete template: %s", err.Error())
+		Explode("Error while processing auto-complete template: " + err.Error())
 	} else {
 		fmt.Println(res)
 	}

@@ -3,6 +3,7 @@ package aniutil
 import (
 	"fmt"
 	"github.com/PietroCarrara/anigo/anidata"
+	"github.com/PietroCarrara/anigo/util"
 	"github.com/antchfx/xmlquery"
 	"log"
 	"net/http"
@@ -18,12 +19,12 @@ func FromMAL(user string) []anidata.Anime {
 
 	req, err := http.Get(url + user)
 	if err != nil {
-		log.Fatalf("Could not reach %s\n", url+user)
+		util.Explode("Could not reach " + url + user)
 	}
 
 	doc, err := xmlquery.Parse(req.Body)
 	if err != nil {
-		log.Fatalf("Error while parsing %s: %s\n", url+user, err.Error())
+		util.Explode("Error while parsing " + url + user + ": " + err.Error())
 	}
 
 	for _, node := range xmlquery.Find(doc, "//anime") {
@@ -90,12 +91,12 @@ func malID(a anidata.Anime, usr, pwd string) string {
 
 	res, err := http.Get(search)
 	if err != nil {
-		log.Fatalf("Could not reach %s: %s\n", search, err.Error())
+		util.Explode("Could not reach " + search + ": " + err.Error())
 	}
 
 	doc, err := xmlquery.Parse(res.Body)
 	if err != nil || doc == nil {
-		log.Fatalf("Error while parsing %s: %s\n", search, err.Error())
+		util.Explode("Error while parsing " + search + ": " + err.Error())
 	}
 
 	return getID(a, doc)
