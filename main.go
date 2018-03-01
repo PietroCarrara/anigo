@@ -28,16 +28,34 @@ var Database []anidata.Anime
 
 func main() {
 
-	if util.Args["debug"] != "true" {
-		log.SetOutput(ioutil.Discard)
-	}
-
 	// Set config home
 	Home = os.Getenv("XDG_CONFIG_HOME")
 	if Home == "" {
 		Home = os.Getenv("HOME") + "/.config"
 	}
 	Home += "/anigo"
+
+	// Config file
+	configFileName := Home + "/config"
+	configFile, err := os.Open(configFileName)
+	if err != nil {
+		util.Parse(os.Args[1:])
+	} else {
+		bytes, _ := ioutil.ReadAll(configFile)
+
+		contents := string(bytes)
+
+		// Remove break lines and split by spaces
+		args := strings.Split(strings.TrimSpace(strings.Replace(contents, "\n", " ", -1)), " ")
+
+		args = append(args, os.Args[1:]...)
+
+		util.Parse(args)
+	}
+
+	if util.Args["debug"] != "true" {
+		log.SetOutput(ioutil.Discard)
+	}
 
 	// Loading previous entries
 	dataBaseFileName := Home + "/database.json"

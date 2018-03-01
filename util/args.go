@@ -3,7 +3,6 @@ package util
 import (
 	"fmt"
 	"github.com/cbroglie/mustache"
-	"os"
 )
 
 type argument struct {
@@ -45,21 +44,21 @@ var arguments []argument = []argument{
 
 var Args map[string]string = map[string]string{}
 
-func init() {
+func Parse(args []string) {
 
 	// Default operation is search
 	Args["command"] = "search"
 
 	// Parse command line arguments
-	for i := 1; i < len(os.Args); i++ {
+	for i := 0; i < len(args); i++ {
 		for _, val := range arguments {
-			if in(os.Args[i], val) {
-				arg := os.Args[i]
+			if in(args[i], val) {
+				arg := args[i]
 				if val.Default != "" {
 					arg = val.Default
 				} else {
 					i++
-					arg = os.Args[i]
+					arg = args[i]
 				}
 				Args[val.Name] = arg
 				break
