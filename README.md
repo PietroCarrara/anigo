@@ -9,7 +9,7 @@ You'll have to create an 'anigo' directory in your ~/.config/ folder or equivale
 
 ## Usage
 
-List 'Watching' shows (-C for completed, -P for planned and -D for dropped)
+List 'Watching' shows (-C for completed or -P for planned too)
 ```
 anigo -W
 ```
@@ -21,19 +21,21 @@ anigo add -t "Little Witch Academia (TV)" -c 25 -C
 
 Search for anime named "Cowboy Bebop" AND is completed
 ```
-anigo query -T "Cowboy Bebop" -C
+anigo [query] -T "Cowboy Bebop" -C
 ```
 
 ## Operation List
 
 * add, -A: Add an entry to the database
+* del, delete, -R: Remove one or more entries matching the criteria
 * edit, -E: Edit all entries mathcing the criteria. To set values use --set-<value>
 * pull: Pull your entries from MyAnimeList.net
 * push: Push your entries to MyAnimeList.net (not recommended)
-* search, query, -Q: Do a search
+* search, query, -Q: Do a search (default if no operation is found)
 * --spit: spit autocomplete from template
 
 ## Options List
+
 * -P, -W, -C, -D: Set status as Plan To Watch, Watching, Completed and Dropped respectively
 * --chapters, -c: Set total number of chapters
 * --debug: Enable debug logging

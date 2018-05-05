@@ -81,9 +81,25 @@ func main() {
 	// Closing since we are done reading
 	databaseFile.Close()
 
+	if util.Args["title"] == "" && util.Args["command"] != "search" {
+
+		red := color.New(color.BgRed).SprintFunc()
+
+		fmt.Printf("%s You have provided no title for the operation. This could go very wrong.\nContinue? [y/N]", red("ATTENTION:"))
+
+		var c rune
+		fmt.Scanf("%c", &c)
+
+		if c != 'y' && c != 'Y' {
+			return
+		}
+	}
+
 	switch util.Args["command"] {
 	case "add":
 		add()
+	case "delete":
+		del()
 	case "search":
 		search()
 	case "pull":
@@ -146,6 +162,19 @@ func add() {
 	Database = append(Database, anim)
 }
 
+func del() {
+
+	var newDB = []anidata.Anime{}
+
+	for _, a := range Database {
+		if !matchCriteria(a) {
+			newDB = append(newDB, a)
+		}
+	}
+
+	Database = newDB
+}
+
 func search() {
 	for _, a := range Database {
 		if matchCriteria(a) {
@@ -184,7 +213,7 @@ func push() {
 				aniutil.Update(*anime, util.Args["user"], util.Args["password"])
 			}
 		} else {
-			// Insert()
+			// TODO: Insert()
 		}
 	}
 }
