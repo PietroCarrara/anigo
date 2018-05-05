@@ -37,6 +37,7 @@ var arguments []argument = []argument{
 	{Name: "command", Usage: []string{"-Q", "search", "query"}, Description: "Do a search", Default: "search"},
 	{Name: "command", Usage: []string{"-A", "add"}, Description: "Add an entry to the database", Default: "add"},
 	{Name: "command", Usage: []string{"-R", "del", "delete"}, Description: "Deletes one or more entries matching the params", Default: "delete"},
+	{Name: "command", Usage: []string{"-I", "watch", "inc"}, Description: "Increases the view count by one on entries matching the params", Default: "watch"},
 	{Name: "command", Usage: []string{"pull"}, Description: "Pull your entries from MyAnimeList.net", Default: "pull"},
 	{Name: "command", Usage: []string{"push"}, Description: "Push your entries to MyAnimeList.net", Default: "push"},
 	{Name: "command", Usage: []string{"-E", "edit"}, Description: "Edit all entries mathcing the criteria. To set values use --set-value", Default: "edit"},

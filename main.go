@@ -100,6 +100,8 @@ func main() {
 		add()
 	case "delete":
 		del()
+	case "watch":
+		watch()
 	case "search":
 		search()
 	case "pull":
@@ -173,6 +175,15 @@ func del() {
 	}
 
 	Database = newDB
+}
+
+func watch() {
+	for i := 0; i < len(Database); i++ {
+		if matchCriteria(Database[i]) {
+			Database[i].Completed++
+			print(Database[i])
+		}
+	}
 }
 
 func search() {
