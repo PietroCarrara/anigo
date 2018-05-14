@@ -161,6 +161,8 @@ func add() {
 
 	anim.Fix()
 
+	print(anim)
+
 	Database = append(Database, anim)
 }
 
