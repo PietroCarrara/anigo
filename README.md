@@ -36,11 +36,13 @@ anigo [query] -T "Cowboy Bebop" -C
 
 ## Options List
 
-* -P, -W, -C, -D: Set status as Plan To Watch, Watching, Completed and Dropped respectively
-* --chapters, -c: Set total number of chapters
-* --debug: Enable debug logging
-* --set-{chapters, completed, status, title}: using the edit operation, change the target property of ALL matching anime to target value
-* --title, -t: Set anime title
-* --user, -u: Set MAL user
-* --password, -p: Set MAL password
-* --watched, -w: Set number of watched chapters
+|Command|Description|
+|-----|-----|
+|-P, -W, -C, -D | Set status as Plan To Watch, Watching, Completed and Dropped respectively|
+|--chapters, -c|Set total number of chapters|
+|--debug|Enable debug logging|
+|--set-{chapters, completed, status, title}|Using the edit operation, change the target property of ALL matching anime to target value|
+|--title, -t|Set anime title|
+|--user, -u|Set MAL user|
+|--password, -p|Set MAL password|
+|--watched, -w|Set number of watched chapters|
